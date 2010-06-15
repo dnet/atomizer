@@ -106,8 +106,7 @@ handle_event(_Event, State) ->
 	State.
 
 extract_link_url(Attrs) ->
-	[Href|_T] = [Url || {attribute, "href", "href", [], Url} <- Attrs],
-	Href.
+	hd([Url || {attribute, "href", _, _, Url} <- Attrs]).
 
 build_state(Command, Feed, Entries) ->
 	lists:flatten([build_cmd(Command), build_state(Feed, Entries)]).

@@ -37,10 +37,7 @@
 -include("atomizer.hrl").
 
 parse_feed(RawFeed) ->
-	CB = fun(Event, State) ->
-				 handle_event(Event, State)
-		 end,
-	erlsom:sax(RawFeed, [], CB).
+	erlsom:sax(RawFeed, [], fun handle_event/2).
 
 handle_event(startDocument, _State) ->
 	io:format("startDocument~n"),

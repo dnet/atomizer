@@ -1,11 +1,11 @@
 SRC_DIR=src
 OUT_DIR=ebin
 
-all: clean prepare
+all: prepare
 	erlc -o $(OUT_DIR) $(SRC_DIR)/*.erl
 
 prepare:
-	mkdir $(OUT_DIR)
+	mkdir -p $(OUT_DIR)
 clean:
-	rm -rf $(OUT_DIR)
+	rm -f $(OUT_DIR)/*.beam
 

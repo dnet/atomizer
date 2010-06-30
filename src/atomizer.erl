@@ -78,7 +78,7 @@ examine_content_type(ContentType) ->
 	end.
 
 parse(unknown, _Feed) ->
-	uknown;
+	unknown;
 
 parse(rss, Feed) ->
 	void;

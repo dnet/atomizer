@@ -51,12 +51,12 @@ parse_file(FilePath) ->
 	parse(examine_content(Feed), Feed).
 					
 examine_content(Feed) ->
-	case regexp:match(Feed, "<feed") of
-		{match, _, _} ->
+	case re:run(Feed, "<feed") of
+		{match, _} ->
 			atom;
 		nomatch ->
-			case regexp:match(Feed, "<channel") of
-				{match, _, _} ->
+			case re:run(Feed, "<channel") of
+				{match, _} ->
 					rss;
 				nomatch ->
 					unknown

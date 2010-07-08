@@ -40,11 +40,9 @@ parse_feed(RawFeed) ->
 	erlsom:sax(RawFeed, [], fun handle_event/2).
 
 handle_event(startDocument, _State) ->
-	io:format("startDocument~n"),
 	[{cmd, start}, {md, #feed{}}, {entries, []}];
 
 handle_event({endElement, _NS, "feed", _}, [{cmd, _Command}, {md, Feed}, {entries, Entries}]) ->
-	io:format("end feed element~n"),
 	Feed#feed{entries=Entries};
 
 handle_event({startElement, _NS, "title", _, _Attrs}, [{cmd, start}, {md, Feed}, {entries, Entries}]) ->
@@ -57,18 +55,15 @@ handle_event({startElement, _NS, "id", _, _Attrs}, [{cmd, start}, {md, Feed}, {e
 	build_state(permalinktext, Feed, Entries);
 
 handle_event({characters, Text}, [{cmd, permalinktext}, {md, Feed}, {entries, Entries}]) ->
-	io:format("permalinktext~n"),
 	build_state(start, Feed#feed{url=Text}, Entries);
 
 handle_event({startElement, _NS, "link", _, Attrs}, [{cmd, start}, {md, Feed}, {entries, Entries}]) ->
-	io:format("permalink~n"),
 	build_state(start, Feed#feed{url=extract_link_url(Attrs)}, Entries);
 
 handle_event({startElement, _NS, "name", _, _Attrs}, [{cmd, entry}, {md, Feed}, {entries, Entries}]) ->
 	build_state(nametext, Feed, Entries);
 
 handle_event({characters, Text}, [{cmd, nametext}, {md, Feed}, {entries, Entries}]) ->
-	io:format("nametext~n"),
  	[Entry|T] = Entries,
  	UpdatedEntry = Entry#feedentry{author=Text},
 	build_state(entry, Feed, [UpdatedEntry|T]);
@@ -83,19 +78,16 @@ handle_event({startElement, _NS, "title", _, _Attrs}, [{cmd, entry}, {md, Feed},
 	build_state(entrytitletext, Feed, Entries);
 
 handle_event({characters, Text}, [{cmd, entrytitletext}, {md, Feed}, {entries, Entries}]) ->
-	io:format("getting entrytitletext~n"),
 	[Entry|T] = Entries,
 	UpdatedEntry = Entry#feedentry{title=Text},
 	build_state(entry, Feed, [UpdatedEntry|T]);
 
 handle_event({startElement, _NS, "link", _, Attrs}, [{cmd, entry}, {md, Feed}, {entries, Entries}]) ->
-	io:format("getting entrylink~n"),
  	[Entry|T] = Entries,
  	UpdatedEntry = Entry#feedentry{permalink=extract_link_url(Attrs)},
 	build_state(entry, Feed, [UpdatedEntry|T]);
 
 handle_event({startElement, _NS, "content", _, _Attrs}, [{cmd, entry}, {md, Feed}, {entries, Entries}]) ->
-	io:format("getting entrycontent~n"),
 	build_state(entry, Feed, Entries);
 
 handle_event({characters, Text}, [{cmd, entrycontenttext}, {md, Feed}, {entries, Entries}]) ->

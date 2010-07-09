@@ -67,6 +67,3 @@ extract_content_type([H|T], Accum) ->
 	end;
 extract_content_type([], Accum) ->
 	Accum.
-	
-
-						

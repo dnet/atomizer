@@ -73,7 +73,7 @@ examine_content_type(ContentType) ->
 			atom;
 		"application/xml" ->
 			atom;
-		true ->
+		_ ->
 			unknown
 	end.
 

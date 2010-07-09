@@ -103,11 +103,4 @@ extract_link_url(Attrs) ->
 	hd([Url || {attribute, "href", _, _, Url} <- Attrs]).
 
 build_state(Command, Feed, Entries) ->
-	lists:flatten([build_cmd(Command), build_state(Feed, Entries)]).
-
-build_state(Feed, Entries) ->
-   [{md, Feed}, {entries, Entries}].
-
-build_cmd(Command) ->
-	{cmd, Command}.
-
+	[{cmd, Command}, {md, Feed}, {entries, Entries}].
